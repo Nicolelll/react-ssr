@@ -1,26 +1,34 @@
+/*
+ * @Author: zhangLing
+ * @Date: 2020-04-02 14:56:15
+ * @LastEditors: zhangLing
+ * @LastEditTime: 2020-04-03 11:07:42
+ * @Description: 文件描述
+ */
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { 
+  BrowserRouter,
+  Route,
+  Switch,
+} from 'react-router-dom'
 
-function App() {
+const routes = require.context('./routes', false, /\.js$/)
+
+function Routes() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        {/* <Redirect form='/' to='/app' /> */}
+        {
+          routes.keys().map(item => {
+            let [ path ] = /\/\w+/.exec(item)
+            return <Route path={path} component={routes(item).default} key={item} exact />
+          })
+        }
+      </Switch>
+    </BrowserRouter>
   );
 }
 
-export default App;
+
+export default Routes;
